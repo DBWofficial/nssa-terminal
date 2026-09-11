@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSSA 档案2</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  display:flex;
+  background:#1a1a1a;
+  font-family: "SimSun", "宋体", serif;
+  color:#000;
+  min-height:100vh;
+}
+.sidebar{
+  width:260px;
+  background:#111;
+  color:#aaa;
+  padding:20px 12px;
+  border-right:1px solid #333;
+  position:fixed;
+  height:100vh;
+  overflow:hidden;
+}
+.sidebar h3{
+  color:#ddd;
+  margin-bottom:16px;
+  font-size:16px;
+  font-family:Consolas,monospace;
+}
+.file-item{
+  padding:8px 6px;
+  margin:4px 0;
+  font-size:14px;
+  border-radius:4px;
+}
+.file-item.active{
+  background:#222;
+  color:#ffffff;
+  border-left:3px solid #bb0000;
+}
+.file-item.unlock{
+  color:#39ff14;
+  cursor:pointer;
+}
+.file-item.unlock a{
+  color:#39ff14;
+  text-decoration:none;
+}
+.file-item.unlock:hover{
+  background:#252525;
+}
+.file-item.masked{
+  color:#555;
+  cursor:not-allowed;
+}
