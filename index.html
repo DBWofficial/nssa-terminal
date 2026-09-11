@@ -138,16 +138,17 @@ body{padding-top:32px;}
 <!-- 左侧档案列表 -->
 <div class="sidebar">
 <h3>📂 NSSA 档案库</h3>
-<div class="file-item active">特邀伦理审计官入职保密协议暨权限预授文件</div>
-<div class="file-item disabled">████████████████</div>
-<div class="file-item disabled">████████████████</div>
-<div class="file-item disabled">████████████████</div>
-<div class="file-item disabled">████████████████</div>
-<div class="file-item disabled">████████████████</div>
-<div class="file-item disabled">████████████████</div>
-<div class="file-item disabled">████████████████</div>
-<div class="file-item disabled">████████████████</div>
-<div class="file-item disabled">████████████████</div>
+<div class="file-item active">《特邀伦理审计官入职保密协议暨权限预授文件》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
+<div class="file-item disabled">《████████████████》</div>
 </div>
 
 <!-- 文档主体 -->
@@ -156,7 +157,7 @@ body{padding-top:32px;}
 <div class="red-header">
 <h1>神经主权安全局（NSSA）</h1>
 </div>
-<div>特邀伦理审计官入职保密协议暨权限预授文件</div>
+<div>《特邀伦理审计官入职保密协议暨权限预授文件》</div>
 <div class="doc-id">文档编号：NSSA-EC-SEC-2060-0119-S</div>
 <div class="meta-info">
 密级：机密（CONFIDENTIAL） // 注：本协议文本本身为机密；签署完成后，凭本协议生成的密钥方可解密关联之【绝密】附件。<br>
@@ -225,10 +226,6 @@ function getDevice(){
   if(/android|iphone|ipad|ipod/.test(ua)) return "移动终端";
   return "PC工作站";
 }
-// 格式化时间
-function formatTime(){
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
 }
 // 获取IP归属
 async function getIpArea(){
