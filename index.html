@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSSA内部重大违纪处分通告</title>
+    <style>
+        /* 基础重置与全局样式 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: #e0e0e0; /* 模拟旧显示器或办公桌面的灰底色 */
+            font-family: "SimSun", "宋体", serif; /* 强制使用公文标准字体 */
+            color: #000000;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* 纸张容器 */
+        .paper {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 794px; /* A4纸宽度像素近似值 */
+            min-height: 1123px; /* A4纸高度像素近似值 */
+            padding: 80px 70px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 红头部分 */
+        .red-header {
+            text-align: center;
+            border-bottom: 2px solid #ff0000;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+        }
+
+        .red-header h1 {
+            color: #ff0000;
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .doc-number {
+            font-size: 14px;
+            color: #333;
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        /* 正文部分 */
+        .content {
+            flex-grow: 1;
+            font-size: 18px; /* 三号字近似 */
+            line-height: 2.2; /* 公文标准行距 */
+            text-align: justify;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-indent: 2em;
+        }
+
+        .highlight {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* 动态数据样式 */
+        .dynamic-data {
+            font-family: "Courier New", monospace;
+            background-color: #f0f0f0;
+            padding: 0 4px;
+            border: 1px solid #ccc;
+            font-weight: bold;
+            color: #d00000;
+        }
+
+        /* 底部印章区 */
+        .footer {
+            margin-top: 60px;
+            text-align: right;
+            position: relative;
+            padding-right: 40px;
+        }
+
+        .date {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .seal {
+            width: 140px;
+            height: 140px;
+            border: 3px solid #ff0000;
+            border-radius: 50%;
+            color: #ff0000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            position: absolute;
+            right: -20px;
+            bottom: -40px;
+            opacity: 0.8;
+            transform: rotate(-15deg);
+            pointer-events: none;
+            background: transparent;
+            z-index: 10;
+        }
+        
+        .seal-text {
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* 打印专用样式 - 恐怖彩蛋 */
+        @media print {
+            body { 
+                background-color: #fff; 
+                padding: 0;
+            }
+            .paper { 
+                box-shadow: none; 
+                width: 100%; 
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            /* 隐藏正常内容 */
+            .content, .red-header {
+                display: none;
+            }
+            /* 显示隐藏信息 */
+            .print-trap {
+                display: block !important;
+                position: fixed;
+                top: 0; left: 0; width: 100%; height: 100%;
+                background: black;
+                color: red;
+                font-size: 40px;
+                text-align: center;
+                padding-top: 20%;
+                z-index: 9999;
+            }
+        }
+        
+        .print-trap { display: none; }
+
+        /* 加载状态 */
+        #loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="paper">
+        <!-- 打印陷阱层 -->
+        <div class="print-trap">
+            ⚠️ 警告：检测到未经授权的物理复制行为<br>
+            审计官ID已记录<br>
+            请立即停止操作
+        </div>
+
+        <div class="red-header">
+            <h1>网络空间安全审查局</h1>
+            <div class="doc-number">NSSA-SEC-2026-0911</div>
+        </div>
+
+        <div class="content" id="main-content">
+            <div id="loading">正在连接 Sigma 3.3 引擎解析本地环境...</div>
+            
+            <div id="document-body" style="display:none;">
+                <div class="title">关于对审计对象 [SUBJ-AUDITOR-0911] 的<br>违规访问通报及处置决定</div>
+
+                <p><strong>各相关科室、直属数据中心：</strong></p>
+
+                <p>经系统自动监测与人工复核，现查明审计对象 <span class="dynamic-data" id="user-ip">[数据加载中]</span> （归属地：<span class="dynamic-data" id="user-location">[定位中]</span>）于 <span class="dynamic-data" id="current-time">[时间同步中]</span> 试图通过非授权终端访问 NSSA 核心归档数据库。</p>
+
+                <p>该行为严重违反了《第404号保密协议》及《深层网络访问控制条例》第三章第七条之规定。系统日志显示，该对象在访问过程中触发了三级静默警报，且未持有有效的 L4 级以上数字签名证书。</p>
+
+                <p>鉴于上述事实清楚，证据链完整，经局务会紧急审议，决定对该对象作出如下即时处置：</p>
+
+                <p>一、立即冻结该对象当前会话的所有读写权限；<br>
+                二、将其物理位置坐标标记为“待核查区域”；<br>
+                三、启动本地环境静默扫描程序（Sigma 3.3 引擎已介入）。</p>
+
+                <p>本通报自生成之刻起生效，无需人工签收。任何试图关闭、刷新或截断本页面连接的行为，将被视为抗拒审查的加重情节。</p>
+
+                <p>特此通报。</p>
+            </div>
+        </div>
+
+        <div class="footer" id="footer-section" style="display:none;">
+            <div class="date" id="doc-date"></div>
+            <div class="seal">
+                <div class="seal-text">网络空间安全<br>审查局<br>监察处</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟系统加载延迟，增加真实感
+        setTimeout(async () => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('document-body').style.display = 'block';
+            document.getElementById('footer-section').style.display = 'block';
+
+            // 1. 获取并格式化时间
+            const now = new Date();
+            const timeString = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+            const dateString = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
+            
+            document.getElementById('current-time').textContent = timeString;
+            document.getElementById('doc-date').textContent = dateString;
+
+            // 2. 获取 IP 和 地理位置 (使用 ipapi.co，支持 HTTPS)
+            try {
+                // 先获取 IP
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const userIp = ipData.ip;
+
+                // 再获取地理位置
+                const geoResponse = await fetch(`https://ipapi.co/${userIp}/json/`);
+                const geoData = await geoResponse.json();
+
+                // 填充数据
+                document.getElementById('user-ip').textContent = userIp;
+                
+                // 组合城市和国家/地区，如果失败则显示未知
+                const location = (geoData.city || "未知区域") + ", " + (geoData.country_name || "未知扇区");
+                document.getElementById('user-location').textContent = location;
+
+            } catch (error) {
+                console.error("NSA Engine Error:", error);
+                document.getElementById('user-ip').textContent = "127.0.0.1 (LOCALHOST_LOOPBACK)";
+                document.getElementById('user-location').textContent = "内部局域网 / 无法解析";
+            }
+
+        }, 1500); // 1.5秒延迟
+    </script>
+</body>
+</html>
