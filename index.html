@@ -3,562 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>神经主权安全局 | NSSA 官方网站</title>
+    <title>NSSA | ABYSS 项目技术档案</title>
     <style>
+        :root {
+            --bg-color: #05080f;
+            --panel-bg: #0d121f;
+            --text-main: #c9d1d9;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --alert-red: #ef4444;
+            --border-color: #1e293b;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-            background: #050816;
-            color: #e6f1ff;
-            line-height: 1.7;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
         /* 顶部导航 */
         header {
+            background: rgba(5, 8, 15, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
             position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
-            padding: 18px 60px;
+            top: 0;
+            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(5, 8, 22, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 229, 255, 0.15);
-            z-index: 1000;
+            backdrop-filter: blur(5px);
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 20px;
+            font-family: var(--font-mono);
             font-weight: bold;
-            color: #00e5ff;
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
             letter-spacing: 2px;
         }
 
-        .logo-icon {
-            width: 38px;
-            height: 38px;
-            border: 2px solid #00e5ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        .status-bar {
+            font-size: 0.8rem;
+            color: #64748b;
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-        }
-
-        nav a {
-            color: #b0c4de;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        nav a:hover {
-            color: #00e5ff;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #00e5ff;
-            transition: width 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        /* 主视觉区 */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            background: radial-gradient(ellipse at center, #0a1628 0%, #050816 70%);
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            border: 1px solid rgba(0, 229, 255, 0.1);
-            border-radius: 50%;
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            border: 1px solid rgba(0, 229, 255, 0.15);
-            border-radius: 50%;
-            animation: pulse 4s ease-in-out infinite 1s;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-        }
-
-        .hero h1 {
-            font-size: 52px;
-            letter-spacing: 8px;
-            margin-bottom: 16px;
-            background: linear-gradient(90deg, #00e5ff, #7c4dff, #00e5ff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s linear infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        .hero .subtitle {
-            font-size: 18px;
-            color: #7eb8da;
-            letter-spacing: 4px;
-            margin-bottom: 12px;
-        }
-
-        .hero .motto {
-            font-size: 14px;
-            color: #5a7a9a;
-            letter-spacing: 6px;
-            margin-bottom: 40px;
-        }
-
-        .hero-btn {
+        .status-dot {
             display: inline-block;
-            padding: 14px 40px;
-            border: 1px solid #00e5ff;
-            color: #00e5ff;
-            text-decoration: none;
-            font-size: 14px;
-            letter-spacing: 3px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            margin-right: 5px;
+            box-shadow: 0 0 5px #10b981;
         }
 
-        .hero-btn:hover {
-            background: rgba(0, 229, 255, 0.1);
-            box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+        /* 主容器 */
+        main {
+            max-width: 1000px;
+            margin: 80px auto 40px;
+            padding: 0 20px;
         }
 
-        /* 通用区块 */
         section {
-            padding: 100px 60px;
-            max-width: 1200px;
-            margin: 0 auto;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 32px;
-            letter-spacing: 4px;
-            margin-bottom: 16px;
-            color: #00e5ff;
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .section-desc {
-            text-align: center;
-            color: #7eb8da;
-            margin-bottom: 60px;
-            font-size: 15px;
+        h1, h2, h3 {
+            color: #fff;
+            margin-bottom: 1rem;
         }
 
-        /* 使命区 */
-        .mission-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+        h2 {
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 1rem;
+            font-size: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .mission-card {
-            background: rgba(10, 22, 40, 0.6);
-            border: 1px solid rgba(0, 229, 255, 0.12);
-            padding: 40px 30px;
-            text-align: center;
-            transition: all 0.3s;
+        p {
+            margin-bottom: 1rem;
+            color: #94a3b8;
+        }
+
+        /* 核心定义卡片 */
+        .definition-box {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 4px;
             position: relative;
-            overflow: hidden;
         }
 
-        .mission-card::before {
-            content: '';
+        .definition-box::before {
+            content: "SYSTEM DEFINITION";
             position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--bg-color);
+            padding: 0 10px;
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+        }
+
+        /* 边界原则列表 */
+        .boundary-list {
+            list-style: none;
+            counter-reset: my-counter;
+        }
+
+        .boundary-list li {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+
+        .boundary-list li::before {
+            counter-increment: my-counter;
+            content: "0" counter(my-counter);
+            position: absolute;
+            left: 0;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00e5ff, transparent);
-            transition: left 0.5s;
-        }
-
-        .mission-card:hover::before {
-            left: 100%;
-        }
-
-        .mission-card:hover {
-            border-color: rgba(0, 229, 255, 0.4);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 40px rgba(0, 229, 255, 0.08);
-        }
-
-        .mission-icon {
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-
-        .mission-card h3 {
-            font-size: 18px;
-            margin-bottom: 14px;
-            color: #e6f1ff;
-            letter-spacing: 2px;
-        }
-
-        .mission-card p {
-            font-size: 13px;
-            color: #7eb8da;
-            line-height: 1.8;
-        }
-
-        /* 条例区 */
-        .regulations {
-            background: rgba(10, 22, 40, 0.4);
-            border-top: 1px solid rgba(0, 229, 255, 0.08);
-            border-bottom: 1px solid rgba(0, 229, 255, 0.08);
-        }
-
-        .reg-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .reg-item {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            padding: 24px 30px;
-            background: rgba(5, 8, 22, 0.6);
-            border-left: 3px solid #7c4dff;
-            transition: all 0.3s;
-        }
-
-        .reg-item:hover {
-            border-left-color: #00e5ff;
-            background: rgba(0, 229, 255, 0.03);
-        }
-
-        .reg-number {
-            font-size: 28px;
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
             font-weight: bold;
-            color: #7c4dff;
-            min-width: 50px;
         }
 
-        .reg-item:hover .reg-number {
-            color: #00e5ff;
+        .warning-text {
+            color: var(--alert-red);
+            font-weight: bold;
         }
 
-        .reg-text h4 {
-            font-size: 16px;
-            margin-bottom: 6px;
-            color: #e6f1ff;
-        }
-
-        .reg-text p {
-            font-size: 13px;
-            color: #7eb8da;
-        }
-
-        /* 新闻区 */
-        .news-grid {
+        /* 算力架构对比 */
+        .arch-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .news-card {
-            background: rgba(10, 22, 40, 0.6);
-            border: 1px solid rgba(0, 229, 255, 0.1);
-            padding: 30px;
-            transition: all 0.3s;
-        }
-
-        .news-card:hover {
-            border-color: rgba(0, 229, 255, 0.3);
-        }
-
-        .news-date {
-            font-size: 12px;
-            color: #7c4dff;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-        }
-
-        .news-card h4 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: #e6f1ff;
-        }
-
-        .news-card p {
-            font-size: 13px;
-            color: #7eb8da;
-            line-height: 1.7;
-        }
-
-        /* 公民服务区 */
-        .services {
-            text-align: center;
-        }
-
-        .service-btns {
-            display: flex;
-            justify-content: center;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
-            flex-wrap: wrap;
+            margin-top: 20px;
         }
 
-        .service-btn {
-            padding: 16px 36px;
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            color: #e6f1ff;
-            text-decoration: none;
-            font-size: 14px;
-            letter-spacing: 2px;
-            transition: all 0.3s;
-            background: rgba(0, 229, 255, 0.03);
+        .arch-card {
+            background: rgba(13, 18, 31, 0.5);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
         }
 
-        .service-btn:hover {
-            background: rgba(0, 229, 255, 0.1);
-            border-color: #00e5ff;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+        .arch-card.active {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.1);
         }
 
-        /* 页脚 */
+        .arch-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-family: var(--font-mono);
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+        .tag.old { background: #334155; color: #94a3b8; }
+        .tag.new { background: rgba(6, 182, 212, 0.2); color: var(--accent-cyan); }
+
+        /* 术语表 */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .term-item {
+            border-left: 2px solid #334155;
+            padding-left: 10px;
+        }
+
+        .term-abbr {
+            color: var(--accent-blue);
+            font-weight: bold;
+            display: block;
+        }
+
+        .term-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
         footer {
-            padding: 50px 60px 30px;
-            border-top: 1px solid rgba(0, 229, 255, 0.1);
             text-align: center;
-            color: #5a7a9a;
-            font-size: 13px;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: #475569;
+            font-size: 0.8rem;
+            margin-top: 4rem;
         }
 
-        footer .footer-links {
-            margin-bottom: 20px;
-        }
-
-        footer a {
-            color: #7eb8da;
-            text-decoration: none;
-            margin: 0 16px;
-            transition: color 0.3s;
-        }
-
-        footer a:hover {
-            color: #00e5ff;
-        }
-
-        footer .copyright {
-            margin-top: 16px;
-            font-size: 12px;
-            color: #3a5a7a;
-        }
-
-        /* 响应式 */
+        /* 响应式调整 */
         @media (max-width: 768px) {
-            header {
-                padding: 14px 20px;
-            }
-
-            nav ul {
-                gap: 16px;
-            }
-
-            .hero h1 {
-                font-size: 28px;
-                letter-spacing: 4px;
-            }
-
-            section {
-                padding: 60px 20px;
-            }
-
-            .mission-grid,
-            .news-grid {
-                grid-template-columns: 1fr;
-            }
+            .arch-grid { grid-template-columns: 1fr; }
+            header { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 顶部导航 -->
-    <header>
-        <div class="logo">
-            <div class="logo-icon">N</div>
-            <span>NSSA</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#mission">机构使命</a></li>
-                <li><a href="#regulations">神经主权条例</a></li>
-                <li><a href="#bci">脑机接口监管</a></li>
-                <li><a href="#news">新闻公告</a></li>
-                <li><a href="#services">公民服务</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <div class="logo">NSSA // ABYSS PROTOCOL</div>
+    <div class="status-bar">
+        <span class="status-dot"></span>系统在线 | 密级: INTERNAL USE ONLY
+    </div>
+</header>
 
-    <!-- 主视觉区 -->
-    <section class="hero">
-        <div class="hero-content">
-            <p class="subtitle">NEURAL SOVEREIGNTY SECURITY AGENCY</p>
-            <h1>神经主权安全局</h1>
-            <p class="motto">守护意识边界 · 捍卫思维自由 · 构筑神经防线</p>
-            <a href="#mission" class="hero-btn">了解我们的使命</a>
+<main>
+    <!-- 1. 总序 -->
+    <section style="animation-delay: 0.1s;">
+        <h1>壹、总序：系统定义与底层边界</h1>
+        <div class="definition-box">
+            <h3>1.1 核心定义</h3>
+            <p><strong>深渊（ABYSS）项目</strong>的本质，非全量脑活动监控系统，系国家级神经主权防护校验基础设施。其唯一法定职能，为验证经由脑机接口下发之刺激信号的合法性。</p>
+            
+            <h3 style="margin-top: 1.5rem;">1.2 威胁建模背景</h3>
+            <p>针对2032年首起侵入式脑机侵害案及后续消费级头环黑产泛滥，系统基于「概率×伤害」模型进行分级防御。目前防御资源向消费级非侵入设备倾斜，导致侵入式特征库存在结构性滞后。</p>
         </div>
     </section>
 
-    <!-- 机构使命 -->
-    <section id="mission">
-        <h2 class="section-title">机构使命</h2>
-        <p class="section-desc">在脑机融合时代，守护每一位公民的神经主权不受侵犯</p>
-        <div class="mission-grid">
-            <div class="mission-card">
-                <div class="mission-icon"></div>
-                <h3>意识安全防护</h3>
-                <p>建立国家级神经信号监测与防御体系，防止非法脑机接口对公民意识进行读取、篡改或植入。</p>
+    <!-- 1.3 底层设计边界 -->
+    <section style="animation-delay: 0.2s;">
+        <h2>1.3 底层设计边界（最高原则）</h2>
+        <p>以下五条构成系统的底层物理边界，贯穿所有历史告警事件：</p>
+        <ul class="boundary-list">
+            <li>不存储完整原始脑流。</li>
+            <li>仅通过密文同态比对，判断经由脑机接口下发的刺激信号是否属于恶意入侵。</li>
+            <li>只能核验“经过脑机设备传入大脑”的信号。</li>
+            <li><span class="warning-text">无法监测不依赖脑机、直接作用于感官的物理刺激（如次声波、声光频段）。</span></li>
+            <li><span class="warning-text">不能直接读取人类思想。</span></li>
+        </ul>
+    </section>
+
+    <!-- 2. 算力架构 -->
+    <section style="animation-delay: 0.3s;">
+        <h2>贰、分层算力架构演进</h2>
+        <p>深渊校验体系采用分层算力架构，随历次告警事件持续迭代。</p>
+        
+        <div class="arch-grid">
+            <!-- 一期 -->
+            <div class="arch-card">
+                <div class="arch-header">
+                    <span>PHASE I (2041-2044)</span>
+                    <span class="tag old">LEGACY</span>
+                </div>
+                <h3>混合算力集群</h3>
+                <p><strong>配置：</strong>商用GPU集群 + NPU阵列</p>
+                <p><strong>逻辑：</strong>NPU做前端波形初筛，GPU做后端FHE密文比对。</p>
+                <p style="color: var(--alert-red); font-size: 0.9rem;">致命缺陷：FHE运算非GPU原生优化方向，大规模并发下极易耗尽算力，导致告警排队超时。</p>
             </div>
-            <div class="mission-card">
-                <div class="mission-icon"></div>
-                <h3>神经数据主权</h3>
-                <p>确保公民的神经数据归属于个人，任何组织未经法定授权不得采集、存储或传输脑电信息。</p>
+
+            <!-- 二期 -->
+            <div class="arch-card active">
+                <div class="arch-header">
+                    <span>PHASE II (2045+)</span>
+                    <span class="tag new">CURRENT</span>
+                </div>
+                <h3>专用算力落地</h3>
+                <p><strong>配置：</strong>自研 FHE 同态加速 ASIC + 扩容 NPU</p>
+                <p><strong>逻辑：</strong>ASIC硬件电路专为多项式与模运算定制，接管核心密文比对。</p>
+                <p style="color: var(--accent-cyan); font-size: 0.9rem;">优势：吞吐与能效远超通用GPU，NPU专注于复合攻击特征融合。</p>
             </div>
-            <div class="mission-card">
-                <div class="mission-icon">️</div>
-                <h3>伦理合规监管</h3>
-                <p>制定并执行脑机接口技术应用的伦理准则，对违规企业进行审查、处罚及技术召回。</p>
-            </div>
+        </div>
+
+        <div style="margin-top: 2rem; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 4px;">
+            <h4>稳定期算力分工矩阵</h4>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem;">
+                <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
+                    <th style="padding: 8px; color: var(--accent-cyan);">单元</th>
+                    <th style="padding: 8px; color: var(--accent-cyan);">职能</th>
+                    <th style="padding: 8px; color: var(--accent-cyan);">权限边界</th>
+                </tr>
+                <tr>
+                    <td style="padding: 8px;">NPU集群</td>
+                    <td style="padding: 8px;">前端明文侧AI推理、波形特征挖掘</td>
+                    <td style="padding: 8px; color: #64748b;">严禁接触解密后的原始脑电基线</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px;">FHE ASIC</td>
+                    <td style="padding: 8px;">核心密文比对</td>
+                    <td style="padding: 8px; color: #64748b;">全程在密域完成，严禁还原用户原始脑流</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px;">GPU集群</td>
+                    <td style="padding: 8px;">弹性应急备用、算法仿真</td>
+                    <td style="padding: 8px; color: #64748b;">仅作冗余备份</td>
+                </tr>
+            </table>
         </div>
     </section>
 
-    <!-- 神经主权条例 -->
-    <section id="regulations" class="regulations">
-        <h2 class="section-title">神经主权条例</h2>
-        <p class="section-desc">核心法规框架，保障公民在神经空间中的基本权利</p>
-        <div class="reg-list">
-            <div class="reg-item">
-                <span class="reg-number">01</span>
-                <div class="reg-text">
-                    <h4>思维不可侵犯原则</h4>
-                    <p>任何个人或组织不得以技术手段非法侵入他人思维空间，违者将依据《神经主权法》第7条追究刑事责任。</p>
-                </div>
+    <!-- 附录 -->
+    <section style="animation-delay: 0.4s;">
+        <h2>附录：术语索引表 (GLOSSARY)</h2>
+        <div class="glossary-grid">
+            <div class="term-item">
+                <span class="term-abbr">NSSA</span>
+                <span class="term-desc">国家神经主权安全局</span>
             </div>
-            <div class="reg-item">
-                <span class="reg-number">02</span>
-                <div class="reg-text">
-                    <h4>神经数据知情同意</h4>
-                    <p>脑机接口设备采集用户神经数据前，必须以可理解方式告知用途，并获得用户明确的主动授权。</p>
-                </div>
+            <div class="term-item">
+                <span class="term-abbr">ABYSS</span>
+                <span class="term-desc">深渊基线产出安全系统</span>
             </div>
-            <div class="reg-item">
-                <span class="reg-number">03</span>
-                <div class="reg-text">
-                    <h4>意识完整性保障</h4>
-                    <p>禁止任何形式的外部信号对公民自主意识进行干扰、操控或人格重塑，保障思维独立性。</p>
-                </div>
+            <div class="term-item">
+                <span class="term-abbr">BCI</span>
+                <span class="term-desc">脑机接口</span>
             </div>
-            <div class="reg-item">
-                <span class="reg-number">04</span>
-                <div class="reg-text">
-                    <h4>脑机接口准入制度</h4>
-                    <p>所有脑机接口设备须通过NSSA安全认证方可上市，未认证设备视为非法神经侵入装置。</p>
-                </div>
+            <div class="term-item">
+                <span class="term-abbr">FHE</span>
+                <span class="term-desc">全同态加密</span>
+            </div>
+            <div class="term-item">
+                <span class="term-abbr">ASIC</span>
+                <span class="term-desc">专用集成电路 (FHE加速)</span>
+            </div>
+            <div class="term-item">
+                <span class="term-abbr">CNS</span>
+                <span class="term-desc">中枢神经系统</span>
             </div>
         </div>
     </section>
+</main>
 
-    <!-- 脑机接口监管 -->
-    <section id="bci">
-        <h2 class="section-title">脑机接口监管</h2>
-        <p class="section-desc">对全国脑机接口设备实施全生命周期安全监管</p>
-        <div class="mission-grid">
-            <div class="mission-card">
-                <div class="mission-icon"></div>
-                <h3>信号监测网络</h3>
-                <p>部署覆盖全国的神经信号异常监测站，实时识别非法脑机通信与未授权神经数据外传行为。</p>
-            </div>
-            <div class="mission-card">
-                <div class="mission-icon">️</div>
-                <h3>设备安全认证</h3>
-                <p>建立脑机接口设备三级安全认证体系，从硬件加密到软件协议进行全面安全评估。</p>
-            </div>
-            <div class="mission-card">
-                <div class="mission-icon"></div>
-                <h3>应急响应机制</h3>
-                <p>设立7×24小时神经安全应急中心，对意识入侵事件实现15分钟内响应、2小时内处置。</p>
-            </div>
-        </div>
-    </section>
+<footer>
+    <p>NSSA OFFICIAL ARCHIVE | DOCUMENT ID: ABYSS-APPENDIX-GLS-001</p>
+    <p>WARNING: UNAUTHORIZED ACCESS IS A FEDERAL OFFENSE UNDER THE NEURAL SOVEREIGNTY ACT.</p>
+</footer>
 
-    <!-- 新闻公告 -->
-    <section id="news" class="regulations">
-        <h2 class="section-title">新闻公告</h2>
-        <p class="section-desc">最新动态与政策发布</p>
-        <div class="news-grid">
-            <div class="news-card">
-                <p class="news-date">2087.09.10</p>
-                <h4>《神经主权法》修正案正式发布</h4>
-                <p>新增对深层意识读取行为的刑事处罚条款，最高刑期提升至十五年，即日起生效。</p>
-            </div>
-            <div class="news-card">
-                <p class="
-
-[(doc_common_card_1)]
+</body>
+</html>
