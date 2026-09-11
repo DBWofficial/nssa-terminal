@@ -97,7 +97,7 @@
     <!--顶部状态栏-->
     <div class="status-bar">
         <span id="deviceInfo"></span> |
-        虚拟IP：<span id="fakeIp"></span> |
+        IP地址：<span id="fakeIp"></span> |
         IP归属地：<span id="locationText">加载中...</span>
     </div>
 
@@ -146,7 +146,7 @@
         "NSSA 紧急异常事件通告"
     ];
 
-    // 随机虚拟IP（固定内网网段，假IP，不获取真实IP）
+    // 随机虚拟IP，界面文字改为IP地址（不再写虚拟IP）
     const fakeIpPool = [
         "10.142.77.31",
         "10.89.21.154",
@@ -159,13 +159,21 @@
     const randFakeIp = fakeIpPool[Math.floor(Math.random()*fakeIpPool.length)];
     document.getElementById("fakeIp").innerText = randFakeIp;
 
-    // 获取真实IP归属地（仅拿地区，不获取本机真实IP地址）
+    // 获取真实IP归属地，只保留省市
     async function getRealLocation(){
         try {
             const res = await fetch("https://ipapi.co/json/");
             const data = await res.json();
-            const area = `${data.region || data.city}·${data.country_name}`;
-            document.getElementById("locationText").innerText = area;
+            // 只输出 省·市 格式
+            const province = data.region || "";
+            const city = data.city || "";
+            if(province && city){
+                document.getElementById("locationText").innerText = `${province}·${city}`;
+            }else if(city){
+                document.getElementById("locationText").innerText = city;
+            }else{
+                document.getElementById("locationText").innerText = "离线终端，位置无法核验";
+            }
         } catch (e) {
             document.getElementById("locationText").innerText = "离线终端，位置无法核验";
         }
