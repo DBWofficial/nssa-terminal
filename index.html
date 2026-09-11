@@ -97,7 +97,7 @@
     <!--顶部状态栏-->
     <div class="status-bar">
         <span id="deviceInfo"></span> |
-        IP地址：<span id="fakeIp"></span> |
+        IP地址：<span id="ipText">加载中...</span> |
         IP归属地：<span id="locationText">加载中...</span>
     </div>
 
@@ -132,7 +132,7 @@
     </div>
 
 <script>
-    //档案清单
+    // 档案清单
     const docTitles = [
         "特邀伦理审计官入职保密协议暨权限预授文件",
         "神经主权安全局（NSSA）内部档案",
@@ -146,7 +146,7 @@
         "NSSA 紧急异常事件通告"
     ];
 
-    // 随机虚拟IP，界面文字改为IP地址（不再写虚拟IP）
+    // 内网虚拟IP池，每次刷新随机挑选
     const fakeIpPool = [
         "10.142.77.31",
         "10.89.21.154",
@@ -156,64 +156,59 @@
         "10.33.124.79",
         "10.106.49.188"
     ];
-    const randFakeIp = fakeIpPool[Math.floor(Math.random()*fakeIpPool.length)];
-    document.getElementById("fakeIp").innerText = randFakeIp;
+    const randomIp = fakeIpPool[Math.floor(Math.random() * fakeIpPool.length)];
+    document.getElementById("ipText").innerText = randomIp;
 
-    // 获取真实IP归属地，只保留省市
+    // 获取真实归属地，IP使用随机虚拟内网IP
     async function getRealLocation(){
         try {
-            const res = await fetch("https://ipapi.co/json/");
+            const res = await fetch("https://api.vvhan.com/api/visitor.info");
             const data = await res.json();
-            // 只输出 省·市 格式
-            const province = data.region || "";
-            const city = data.city || "";
-            if(province && city){
-                document.getElementById("locationText").innerText = `${province}·${city}`;
-            }else if(city){
-                document.getElementById("locationText").innerText = city;
-            }else{
-                document.getElementById("locationText").innerText = "离线终端，位置无法核验";
-            }
-        } catch (e) {
+            const prov = data.prov;
+            const city = data.city;
+            document.getElementById("locationText").innerText = `${prov}，${city}`;
+        } catch(err){
+            // 接口失败兜底文案
             document.getElementById("locationText").innerText = "离线终端，位置无法核验";
         }
     }
     getRealLocation();
 
-    //设备检测 PC / 移动终端
-    function detectDevice(){
-        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    // 设备检测
+    function detectDevice() {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             return "移动终端";
-        }else{
+        } else {
             return "PC终端";
         }
     }
     document.getElementById("deviceInfo").innerText = detectDevice();
 
-    //解锁状态管理
-    let unlockedCount = 1; //初始只解锁第1份（索引0）
+    // 解锁状态管理
+    let unlockedCount = 1;
     let currentDocIndex = 0;
     const listItems = document.querySelectorAll(".doc-list li");
     const contentWrap = document.getElementById("contentWrap");
 
-    function renderListState(){
-        listItems.forEach((li,idx)=>{
-            li.classList.remove("doc-current","doc-unlocked","doc-locked");
-            if(idx === currentDocIndex){
+    function renderListState() {
+        listItems.forEach((li, idx) => {
+            li.classList.remove("doc-current", "doc-unlocked", "doc-locked");
+
+            if (idx === currentDocIndex) {
                 li.classList.add("doc-current");
-            }else if(idx < unlockedCount){
+            } else if (idx < unlockedCount) {
                 li.classList.add("doc-unlocked");
-            }else{
+            } else {
                 li.classList.add("doc-locked");
             }
-        })
+        });
     }
 
-    //切换文档
-    function switchDoc(index){
+    // 切换文档
+    function switchDoc(index) {
         currentDocIndex = index;
         renderListState();
-        //替换标题，正文占位
+
         contentWrap.innerHTML = `
             <div class="red-header">${docTitles[index]}</div>
             <div class="doc-body">
@@ -223,34 +218,34 @@
                 <div style="height:1200px;"></div>
                 <p style="color:#c00;">————文档结束————</p>
             </div>
-        `
-        //绑定滚动监听
-        const scrollBox = contentWrap;
-        scrollBox.onscroll = function(){
-            const scrollTop = scrollBox.scrollTop;
-            const scrollHeight = scrollBox.scrollHeight;
-            const clientHeight = scrollBox.clientHeight;
-            //判断滚动到底部
-            if(scrollTop + clientHeight >= scrollHeight - 30){
-                if(unlockedCount <= index){
+        `;
+
+        // 重新绑定滚动到底部解锁
+        contentWrap.onscroll = function () {
+            const scrollTop = contentWrap.scrollTop;
+            const scrollHeight = contentWrap.scrollHeight;
+            const clientHeight = contentWrap.clientHeight;
+
+            if (scrollTop + clientHeight >= scrollHeight - 30) {
+                if (unlockedCount <= index) {
                     unlockedCount = index + 1;
                     renderListState();
                 }
             }
-        }
+        };
     }
 
-    //目录点击事件
-    listItems.forEach(li=>{
-        li.onclick = function(){
+    // 目录点击
+    listItems.forEach(li => {
+        li.onclick = function () {
             const idx = Number(this.dataset.index);
-            if(idx < unlockedCount){
+            if (idx < unlockedCount) {
                 switchDoc(idx);
             }
-        }
-    })
+        };
+    });
 
-    //初始化
+    // 初始化
     renderListState();
     switchDoc(0);
 </script>
