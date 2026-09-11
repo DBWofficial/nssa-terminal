@@ -47,6 +47,10 @@ body{
   color:#39ff14;
   cursor:pointer;
 }
+.file-item.unlock a{
+  color:#39ff14;
+  text-decoration:none;
+}
 .file-item.unlock:hover{
   background:#252525;
 }
@@ -141,9 +145,6 @@ body{
   padding:6px 16px;
   z-index:9;
 }
-/* 文档切换隐藏 */
-.doc{display:none;}
-.doc.active{display:block;}
 </style>
 </head>
 <body>
@@ -151,24 +152,23 @@ body{
 <div class="status-bar">
 设备：<span id="dev">[检测中]</span>｜IP路由：<span id="ipregion">[解析中]</span>
 </div>
-<!-- 左侧档案列表【固定不滚动】 -->
+<!-- 左侧档案列表【10个档案】 -->
 <div class="sidebar">
 <h3>📂 NSSA 档案库</h3>
-<div class="file-item active" data-doc="doc1">《特邀伦理审计官入职保密协议暨权限预授文件》</div>
-<div id="fileUnlock" class="file-item masked" data-doc="doc2">《███████████████》</div>
-<div class="file-item masked">《███████████████》</div>
-<div class="file-item masked">《███████████████》</div>
-<div class="file-item masked">《███████████████》</div>
-<div class="file-item masked">《███████████████》</div>
-<div class="file-item masked">《███████████████》</div>
-<div class="file-item masked">《███████████████》</div>
-<div class="file-item masked">《███████████████》</div>
-<div class="file-item masked">《███████████████》</div>
+<div class="file-item" data-id="1">《特邀伦理审计官入职保密协议暨权限预授文件》</div>
+<div class="file-item" data-id="2">《███████████████》</div>
+<div class="file-item" data-id="3">《███████████████》</div>
+<div class="file-item" data-id="4">《███████████████》</div>
+<div class="file-item" data-id="5">《███████████████》</div>
+<div class="file-item" data-id="6">《███████████████》</div>
+<div class="file-item" data-id="7">《███████████████》</div>
+<div class="file-item" data-id="8">《███████████████》</div>
+<div class="file-item" data-id="9">《███████████████》</div>
+<div class="file-item" data-id="10">《███████████████》</div>
 </div>
-<!-- 文档容器 -->
+<!-- 文档容器，档案1正文 -->
 <div class="main">
-  <!-- 文档1：保密协议 -->
-  <div id="doc1" class="paper doc active">
+  <div class="paper">
     <div class="red-header">
     <h1>神经主权安全局（NSSA）</h1>
     </div>
@@ -225,91 +225,92 @@ body{
     <p>见证人电子签章：[NSSA国家神经伦理委员会联合密押]</p>
     <p>[本页以下空白 / END OF DOCUMENT]</p>
   </div>
-
-  <!-- 文档2：NSSA内部档案 -->
-  <div id="doc2" class="paper doc">
-    <div class="red-header">
-      <h1>神经主权安全局（NSSA）</h1>
-    </div>
-    <div>《神经主权安全局（NSSA）内部档案》</div>
-    <div class="doc-id">文档编号：NSSA-IN-2060-0120</div>
-    <div class="meta-info">
-      密级：机密（CONFIDENTIAL）<br>
-      签发机构：NSSA 国家神经伦理委员会<br>
-      签发日期：2060年7月5日
-    </div>
-    <p style="margin-top:20px;">此处填写内部档案正文内容。</p>
-    <p>时间戳：2060-07-05 <span id="doc2Ts"></span></p>
-    <p>[本页以下空白 / END OF DOCUMENT]</p>
-  </div>
 </div>
 
 <script>
-// 设备检测
+// 全局：已解锁档案的最大编号，localStorage持久化
+let maxUnlocked = parseInt(localStorage.getItem("nssa_max_unlock")) || 1;
+const sidebarItems = document.querySelectorAll(".file-item[data-id]");
+const docNameList = {
+  1: "《特邀伦理审计官入职保密协议暨权限预授文件》",
+  2: "《神经主权安全局（NSSA）内部档案》",
+  3: "《档案3名称》",
+  4: "《档案4名称》",
+  5: "《档案5名称》",
+  6: "《档案6名称》",
+  7: "《档案7名称》",
+  8: "《档案8名称》",
+  9: "《档案9名称》",
+  10: "《档案10名称》"
+};
+
+// 渲染侧边栏档案状态
+function renderSidebar(){
+  sidebarItems.forEach(el=>{
+    const id = parseInt(el.dataset.id);
+    el.classList.remove("active","unlock","masked");
+    if(id === 1){
+      el.classList.add("active");
+      el.innerText = docNameList[1];
+    }else if(id <= maxUnlocked){
+      el.classList.add("unlock");
+      el.innerHTML = `<a href="doc${id}.html">${docNameList[id]}</a>`;
+    }else{
+      el.classList.add("masked");
+      el.innerText = "《███████████████》";
+    }
+  })
+}
+renderSidebar();
+
+// 设备、时间相关
 function getDevice(){
   const ua = navigator.userAgent.toLowerCase();
   if(/android|iphone|ipad|ipod/.test(ua)) return "移动终端";
   return "PC工作站";
 }
-// 获取时分秒时间
 function formatTime(){
   const d = new Date();
   return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
 }
-// 获取IP归属
-async function getIpArea(){
-  try{
-    const res = await fetch("https://ipapi.co/json/");
-    const json = await res.json();
-    return `${json.region},${json.city}`;
-  }catch(e){
-    return "[已屏蔽 ]";
-  }
-}
-
 let lockTsTimer;
-let signatureDone = false;
-let finalTimestamp = "";
-const unlockFile = document.getElementById("fileUnlock");
+let finalTimestamp = localStorage.getItem("nssa_ts");
 
-// 初始化状态栏
 (async ()=>{
   document.getElementById("dev").innerText = getDevice();
-  document.getElementById("ipregion").innerText = await getIpArea();
-  // 实时刷新时间戳
+  // 时间戳
   lockTsTimer = setInterval(()=>{
     const t = formatTime();
     document.getElementById("realTimePart").innerText = t;
-    document.getElementById("doc2Ts").innerText = t;
   },1000);
 })();
 
-// 文档切换事件
-const fileItems = document.querySelectorAll(".file-item[data-doc]");
-fileItems.forEach(item=>{
-  item.onclick = function(){
-    const targetId = this.getAttribute("data-doc");
-    // 未解锁文档2禁止点击
-    if(targetId === "doc2" && !signatureDone) return;
-    // 切换激活状态：当前激活白色，其余可点击绿色
-    fileItems.forEach(f=>{
-      f.classList.remove("active");
-      if(!f.classList.contains("masked")){
-        f.classList.add("unlock");
-      }
-    })
-    this.classList.add("active");
-    this.classList.remove("unlock");
-    // 切换文档显示
-    document.querySelectorAll(".doc").forEach(d=>d.classList.remove("active"));
-    document.getElementById(targetId).classList.add("active");
+// 滚动到底部解锁下一号档案（档案1读完解锁档案2）
+let scrollTriggered = false;
+window.addEventListener("scroll",()=>{
+  if(scrollTriggered) return;
+  const scrollTop = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  // 到达页面底部阈值
+  if(scrollTop >= docHeight - 120){
+    scrollTriggered = true;
+    if(maxUnlocked < 10){
+      maxUnlocked +=1;
+      localStorage.setItem("nssa_max_unlock",maxUnlocked);
+      renderSidebar();
+    }
   }
 })
 
-// 生物签名3秒倒计时
+// 虹膜签名按钮逻辑
 const btn = document.getElementById("signBtn");
 const resDom = document.getElementById("signResult");
-
+if(finalTimestamp){
+  btn.disabled = true;
+  resDom.innerText = "[欢迎您，L4级伦理审计官。深渊已向您敞开。]";
+  clearInterval(lockTsTimer);
+  document.getElementById("realTimePart").innerText = finalTimestamp;
+}
 btn.onclick = function(){
   let count = 3;
   btn.disabled = true;
@@ -320,18 +321,10 @@ btn.onclick = function(){
       resDom.innerText = `虹膜采集启动... 倒计时 ${count}s`;
     }else{
       clearInterval(timer);
-      signatureDone = true;
-      // 保存最终时间并停止刷新
       finalTimestamp = document.getElementById("realTimePart").innerText;
+      localStorage.setItem("nssa_ts", finalTimestamp);
       clearInterval(lockTsTimer);
-      document.getElementById("realTimePart").innerText = finalTimestamp;
-      document.getElementById("doc2Ts").innerText = finalTimestamp;
-
       resDom.innerText = "[欢迎您，L4级伦理审计官。深渊已向您敞开。]";
-      // 修改文字+切换样式，解锁文档2
-      unlockFile.classList.remove("masked");
-      unlockFile.classList.add("unlock");
-      unlockFile.innerText = "《神经主权安全局（NSSA）内部档案》";
     }
   },1000);
 }
